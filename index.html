@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ochiq Dars: Ratsional Ko'rsatkichli Daraja va Uning Xossalari</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- MathJax CDN - Matematik formulalar uchun -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        @keyframes slideAnim {
+            0% { opacity: 0; transform: translateY(15px) scale(0.98); }
+            100% { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        .slide { display: none; }
+        .slide.active { 
+            display: block; 
+            animation: slideAnim 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; 
+        }
+        .glass-panel {
+            background: rgba(15, 23, 42, 0.94);
+            backdrop-filter: blur(24px);
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.9);
+        }
+        .glow-title {
+            text-shadow: 0 0 25px rgba(99, 102, 241, 0.6);
+        }
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col justify-between font-sans selection:bg-indigo-500 selection:text-white p-4 sm:p-6 relative overflow-x-hidden">
+
+    <!-- Orqa fon neon yorug'liklari -->
+    <div class="absolute top-0 left-1/4 w-[500px] h-[500px] bg-indigo-600/10 rounded-full blur-[140px] pointer-events-none"></div>
+    <div class="absolute bottom-0 right-1/4 w-[500px] h-[500px] bg-purple-600/10 rounded-full blur-[140px] pointer-events-none"></div>
+
+    <!-- Yuqori Taraqqiyot Chizig'i (Progress Bar) -->
+    <div class="max-w-4xl w-full mx-auto mb-3 bg-slate-900 rounded-full h-2 overflow-hidden border border-slate-800">
+        <div id="progress-bar" class="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 h-full w-0 transition-all duration-300"></div>
+    </div>
+
+    <!-- Asosiy Slayd Konteyneri -->
+    <main class="max-w-4xl w-full mx-auto my-auto">
+        <div class="glass-panel p-6 sm:p-8 rounded-3xl min-h-[600px] flex flex-col justify-between relative">
+            
+            <!-- Yuqori panel: Slayd Raqami va Mavzu -->
+            <div class="flex justify-between items-center mb-4 z-10 border-b border-slate-800 pb-3">
+                <div class="flex items-center gap-2">
+                    <div class="w-3 h-3 rounded-full bg-emerald-500 animate-ping"></div>
+                    <span class="text-xs uppercase tracking-widest text-emerald-400 font-bold">Matematika Ochiq Darsi • Master-klass</span>
+                </div>
+                <div class="bg-indigo-950/90 text-indigo-300 px-3.5 py-1 rounded-full text-xs font-mono border border-indigo-800/80 shadow-inner flex items-center gap-2">
+                    <span>Slayd</span> <span id="current-slide-num" class="font-bold text-white text-sm">1</span> / <span id="total-slides-num">22</span>
+                </div>
+            </div>
+
+            <!-- 22 ta Slayd Kontenti (75% Matn va Ilmiy Tahlil Bilan Boyitilgan) -->
+            <div id="slides-container" class="z-10 my-auto space-y-3">
+                
+                <!-- Slayd 1 -->
+                <div class="slide active space-y-3">
+                    <span class="inline-block bg-indigo-500/20 text-indigo-300 px-3 py-1 rounded-xl text-xs font-semibold border border-indigo-500/30">Ochiq Dars Taqdimoti</span>
+                    <h2 class="text-2xl sm:text-4xl font-extrabold text-white leading-tight glow-title">Ratsional ko'rsatkichli daraja va uning tarixi</h2>
+                    <p class="text-slate-200 text-xs sm:text-sm leading-relaxed text-justify">
+                        Bugungi ochiq darsimizda matematika fanining eng muhim va fundamental mavzularidan biri bo'lgan ratsional ko'rsatkichli darajalar, ularning kelib chiqish tarixi, olimlarning ilmiy kashfiyotlari, qat'iy matematik ta'riflari, fundamental algebraik xossalari hamda amaliy va murakkab masalalarni yechish metodikasini chuqur o'rganamiz. Mazkur mavzu o'quvchilarning analitik fikrlashini rivojlantirishda muhim o'rin tutadi.
+                    </p>
+                </div>
+
+                <!-- Slayd 2 -->
+                <div class="slide space-y-2.5">
+                    <h3 class="text-lg sm:text-xl font-bold text-indigo-400">1-Darsning ilmiy-uslubiy maqsadi</h3>
+                    <p class="text-slate-200 text-xs sm:text-sm leading-relaxed text-justify">
+                        Darsning asosiy maqsadi — o'quvchilarga natural va butun ko'rsatkichli darajalardan ratsional ko'rsatkichli darajalarga o'tish mantiqini ochib berishdir. Dars davomida o'quvchilar ildiz ostidagi ifodalarni kasr darajalar shaklida yozish, ularni ko'paytirish, bo'lish va darajaga ko'tarish qoidalarini mustaqil qo'llashni o'rganadilar. Shuningdek, mavzuning amaliy ahamiyati va boshqa fanlar bilan bog'liqligi ko'rsatib o'tiladi.
+                    </p>
+                </div>
+
+                <!-- Slayd 3 -->
+                <div class="slide space-y-2.5">
+                    <h3 class="text-lg sm:text-xl font-bold text-indigo-400">2-Tarixiy ekskurs: Daraja tushunchasining evolyutsiyasi</h3>
+                    <p class="text-slate-200 text-xs sm:text-sm leading-relaxed text-justify">
+                        Qadim zamonlardan boshlab insoniyat miqdorlarni hisoblash va yer maydonlarini o'lchash jarayonida sonlarni o'z-o'ziga ko'paytirish zarurati bilan yuzlashgan. Qadimgi Bobil loy taxtachalarida va Misr papiruslarida kvadrat va kub tushunchalari uchraydi. Asrlar o'tib, matematiklar faqat natural sonlar bilan cheklanib qolmasdan, kasr va manfiy ko'rsatkichlarni ham o'rganish zarurligini tushunib etdilar va bu algebra fanining jadal rivojlanishiga turtki bo'ldi.
+                    </p>
+                </div>
+
+                <!-- Slayd 4 -->
+                <div class="slide space-y-2.5">
+                    <h3 class="text-lg sm:text-xl font-bold text-indigo-400">3-Tarix: Nikol Oresm va kasr ko'rsatkichlar g'oyasi</h3>
+                    <p class="text-slate-200 text-xs sm:text-sm leading-relaxed text-justify">
+                        XIV asrda yashab o'tgan buyuk fransuz olimi va faylasufi <b>Nikol Oresm</b> o'zining ilmiy risolalarida birinchilardan bo'lib kasr ko'rsatkichli darajalar va amaliy ildizlar o'rtasidagi uzviy bog'liqlikni ilgari surdi. Oresm ildiz chiqarish amalini kasr daraja shaklida tasavvur qilish mumkinligini taxmin qildi. Garchi o'sha davrda bu g'oya hozirgidek mukammal belgilanmagan bo'lsa-da, u kelgusi asrlardagi buyuk kashfiyotlar uchun mustahkam poydevor yaratib berdi.
+                    </p>
+                </div>
+
+                <!-- Slayd 5 -->
+                <div class="slide space-y-2.5">
+                    <h3 class="text-lg sm:text-xl font-bold text-indigo-400">4-Tarix: Isaak Nyuton va zamonaviy tahlil</h3>
+                    <p class="text-slate-200 text-xs sm:text-sm leading-relaxed text-justify">
+                        XVII asrda ingliz olimi <b>Isaak Nyuton</b> binom formulasini ixtiyoriy ratsional ko'rsatkichlar uchun umumlashtirib, ratsional daraja tushunchasiga zamonaviy ilmiy tus berdi. Nyutonning bu kashfiyoti cheksiz qatorlar nazariyasi va matematik tahlil asoslarini yaratishda hal qiluvchi rol o'ynadi. Uning izlanishlari tufayli ildiz belgilaridan foydalanish amaliyoti ancha soddalashdi va algebraik amallar tizimlashtirildi.
+                    </p>
+                </div>
+
+                <!-- Slayd 6 -->
+                <div class="slide space-y-2.5">
+                    <h3 class="text-lg sm:text-xl font-bold text-indigo-400">5-Daraja tushunchasining umumiy tizimi</h3>
+                    <p class="text-slate-200 text-xs sm:text-sm leading-relaxed text-justify">
+                        Matematikadagi darajalar bosqichma-bosqich quyidagi tizimga keltirilgan:
+                    </p>
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 text-[11px]">
+                        <div class="bg-slate-900/90 p-2.5 rounded-xl border border-slate-800">
+                            <span class="text-indigo-400 font-bold block mb-1">1. Natural ko'rsatkich</span>
+                            <span>\(a^n = a \cdot a \cdot ... \cdot a\) (\(n\) ta ko'paytma)</span>
+                        </div>
+                        <div class="bg-slate-900/90 p-2.5 rounded-xl border border-slate-800">
+                            <span class="text-indigo-400 font-bold block mb-1">2. Butun ko'rsatkich</span>
+                            <span>\(a^0 = 1\) va \(a^{-n} = \frac{1}{a^n}\) (\(a \neq 0\))</span>
+                        </div>
+                        <div class="bg-slate-900/90 p-2.5 rounded-xl border border-slate-800">
+                            <span class="text-indigo-400 font-bold block mb-1">3. Ratsional ko'rsatkich</span>
+                            <span>\(a^{\frac{m}{n}} = \sqrt[n]{a^m}\) (\(a > 0\))</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Slayd 7 -->
+                <div class="slide space-y-2.5">
+                    <h3 class="text-lg sm:text-xl font-bold text-indigo-400">6-Butun ko'rsatkichli darajalarni takrorlash</h3>
+                    <p class="text-slate-200 text-xs sm:text-sm leading-relaxed text-justify">
+                        Ixtiyoriy haqiqiy \(a\) soni va natural \(n\) soni uchun daraja quyidagicha aniqlanadi:
+                    </p>
+                    <div class="bg-slate-900/90 p-2.5 rounded-xl text-center text-xs font-mono text-indigo-300 border border-indigo-500/30">
+                        \(a^n = \underbrace{a \cdot a \cdot ... \cdot a}_{n \text{ ta}}, \quad (n \in \mathbb{N}, \; n > 1)\)
+                    </div>
+                    <p class="text-slate-200 text-xs leading-relaxed text-justify">
+                        Xususiy hollar sifatida \(a^1 = a\) ekanligini, noldan farqli ixtiyoriy sonning nolinchi darajasi 1 ga tengligini (\(a^0 = 1\)), hamda manfiy butun ko'rsatkich teskari sonni berishini (\(a^{-n} = \frac{1}{a^n}\)) qat'iy yodda tutish lozim.
+                    </p>
+                </div>
+
+                <!-- Slayd 8 -->
+                <div class="slide space-y-2.5">
+                    <h3 class="text-lg sm:text-xl font-bold text-indigo-400">7-\(n\)-darajali arifmetik ildiz tushunchasi</h3>
+                    <p class="text-slate-200 text-xs sm:text-sm leading-relaxed text-justify">
+                        \(a\) sonining \(n\)-darajali arifmetik ildizi deb, \(n\)-darajasi \(a\) ga teng bo'lgan yagona nomanfiy \(b\) soniga aytiladi:
+                    </p>
+                    <div class="bg-slate-900/90 p-2.5 rounded-xl text-center text-xs font-mono text-indigo-300 border border-indigo-500/30">
+                        \(\sqrt[n]{a} = b \iff b^n = a \quad (b \ge 0, \; a \ge 0)\)
+                    </div>
+                    <p class="text-slate-200 text-xs leading-relaxed text-justify">
+                        Bu yerda \(n \ge 2\) natural son bo'lib, u ildiz ko'rsatkichi deb ataladi. Arifmetik ildiz xossalari keyingi hisob-kitoblar uchun asos bo'ladi.
+                    </p>
+                </div>
+
+                <!-- Slayd 9 -->
+                <div class="slide space-y-2.5">
+                    <h3 class="text-lg sm:text-xl font-bold text-indigo-400">8-Arifmetik ildizning asosiy xossalari</h3>
+                    <p class="text-slate-200 text-xs sm:text-sm leading-relaxed text-justify">
+                        Hisoblashlarni sezilarli darajada osonlashtiruvchi ildiz qoidalari quyidagilardan iborat:
+                    </p>
+                    <div class="bg-slate-900/90 p-2.5 rounded-xl space-y-1 text-[11px] font-mono text-indigo-200 border border-indigo-500/30">
+                        <div>• \(\sqrt[n]{ab} = \sqrt[n]{a} \cdot \sqrt[n]{b}\) (ko'paytmadan ildiz chiqarish)</div>
+                        <div>• \(\sqrt[n]{\frac{a}{b}} = \frac{\sqrt[n]{a}}{\sqrt[n]{b}}\) (kasrdan ildiz chiqarish, \(b > 0\))</div>
+                        <div>• \((\sqrt[n]{a})^k = \sqrt[n]{a^k}\) va \(\sqrt[n]{\sqrt[m]{a}} = \sqrt[nm]{a}\)</div>
+                    </div>
+                </div>
+
+                <!-- Slayd 10 -->
+                <div class="slide space-y-2.5">
+                    <h3 class="text-lg sm:text-xl font-bold text-indigo-400">9-Ratsional ko'rsatkichli darajaning qat'iy ta'rifi</h3>
+                    <p class="text-slate-200 text-xs sm:text-sm leading-relaxed text-justify">
+                        Agar \(a > 0\), \(m\) — butun son, va \(n > 1\) — natural son bo'lsa, quyidagi tenglik ratsional ko'rsatkichli darajaning matematik ta'rifi hisoblanadi:
+                    </p>
+                    <div class="bg-slate-900/90 p-3 rounded-xl text-center text-sm font-mono text-indigo-300 border border-indigo-500/30 shadow-inner">
+                        \(a^{\frac{m}{n}} = \sqrt[n]{a^m}\)
+                    </div>
+                    <p class="text-slate-200 text-xs leading-relaxed text-justify">
+                        Bunda asos \(a\) qat'iy ravishda musbat bo'lishi shart (\(a > 0\)). Sababi, manfiy sonlarning juft bo'lmagan maxrajli kasr darajalarida qiymatlar sohasi cheklanib qoladi.
+                    </p>
+                </div>
+
+                <!-- Slayd 11 -->
+                <div class="slide space-y-2.5">
+                    <h3 class="text-lg sm:text-xl font-bold text-indigo-400">10-Sonli misollar va tahlil</h3>
+                    <p class="text-slate-200 text-xs sm:text-sm leading-relaxed text-justify">
+                        Kasr ko'rsatkichli ifodalarni hisoblashga oid amaliy namunalarni tahlil qilamiz:
+                    </p>
+                    <div class="bg-slate-900/90 p-2.5 rounded-xl space-y-1 text-[11px] font-mono text-indigo-200 border border-indigo-500/30">
+                        <div>1) \(8^{\frac{2}{3}} = (\sqrt[3]{8})^2 = 2^2 = 4\)</div>
+                        <div>2) \(27^{-\frac{1}{3}} = \frac{1}{\sqrt[3]{27}} = \frac{1}{3}\)</div>
+                        <div>3) \((0.0016)^{-\frac{3}{4}} = \left(\frac{16}{10000}\right)^{-\frac{3}{4}} = 5^3 = 125\)</div>
+                        <div>4) \(32^{0.4} = 32^{\frac{2}{5}} = (\sqrt[5]{32})^2 = 2^2 = 4\)</div>
+                    </div>
+                </div>
+
+                <!-- Slayd 12 -->
+                <div class="slide space-y-2.5">
+                    <h3 class="text-lg sm:text-xl font-bold text-indigo-400">11-1-Xossa: Asoslari bir xil darajalarni ko'paytirish</h3>
+                    <p class="text-slate-200 text-xs sm:text-sm leading-relaxed text-justify">
+                        Ixtiyoriy musbat \(a > 0\) soni va ratsional \(p, q\) ko'rsatkichlar uchun quyidagi xossa o'rinli:
+                    </p>
+                    <div class="bg-slate-900/90 p-3 rounded-xl text-center text-sm font-mono text-indigo-300 border border-indigo-500/30 shadow-inner">
+                        \(a^p \cdot a^q = a^{p + q}\)
+                    </div>
+                    <p class="text-slate-200 text-xs leading-relaxed text-justify">
+                        Bu xossaga ko'ra, bir xil asosli darajalarni ko'paytirganda asos o'zgarmasdan saqlanib, daraja ko'rsatkichlari o'zaro qo'shiladi. Masalan: \(5^{\frac{1}{3}} \cdot 5^{\frac{2}{3}} = 5^1 = 5\).
+                    </p>
+                </div>
+
+                <!-- Slayd 13 -->
+                <div class="slide space-y-2.5">
+                    <h3 class="text-lg sm:text-xl font-bold text-indigo-400">12-2-Xossa: Asoslari bir xil darajalarni bo'lish</h3>
+                    <p class="text-slate-200 text-xs sm:text-sm leading-relaxed text-justify">
+                        Ixtiyoriy musbat \(a > 0\) soni uchun bo'lish qoidasi quyidagicha yoziladi:
+                    </p>
+                    <div class="bg-slate-900/90 p-3 rounded-xl text-center text-sm font-mono text-indigo-300 border border-indigo-500/30 shadow-inner">
+                        \(\frac{a^p}{a^q} = a^{p - q}\)
+                    </div>
+                    <p class="text-slate-200 text-xs leading-relaxed text-justify">
+                        Ushbu qoidaga asosan, suratdagi daraja ko'rsatkichidan maxrajdagi daraja ko'rsatkichi ayiriladi. Bu algebraik kasrlarni qisqartirishda juda muhim vosita hisoblanadi.
+                    </p>
+                </div>
+
+                <!-- Slayd 14 -->
+                <div class="slide space-y-2.5">
+                    <h3 class="text-lg sm:text-xl font-bold text-indigo-400">13-3-Xossa: Darajani darajaga ko'tarish</h3>
+                    <p class="text-slate-200 text-xs sm:text-sm leading-relaxed text-justify">
+                        Ratsional ko'rsatkichli darajani yana boshqa darajaga ko'tarish qoidasi quyidagicha:
+                    </p>
+                    <div class="bg-slate-900/90 p-3 rounded-xl text-center text-sm font-mono text-indigo-300 border border-indigo-500/30 shadow-inner">
+                        \((a^p)^q = a^{p \cdot q}, \quad (a > 0)\)
+                    </div>
+                    <p class="text-slate-200 text-xs leading-relaxed text-justify">
+                        Bunda asos o'zgarmaydi, ko'rsatkichlar esa bir-biriga ko'paytiriladi. Masalan: \((2^{\frac{3}{4}})^{\frac{4}{3}} = 2^1 = 2\).
+                    </p>
+                </div>
+
+                <!-- Slayd 15 -->
+                <div class="slide space-y-2.5">
+                    <h3 class="text-lg sm:text-xl font-bold text-indigo-400">14-4-Xossa: Ko'paytmaning darajasi</h3>
+                    <p class="text-slate-200 text-xs sm:text-sm leading-relaxed text-justify">
+                        Musbat sonlar ko'paytmasining darajasi quyidagi qoida asosida hisoblanadi:
+                    </p>
+                    <div class="bg-slate-900/90 p-3 rounded-xl text-center text-sm font-mono text-indigo-300 border border-indigo-500/30 shadow-inner">
+                        \((a \cdot b)^p = a^p \cdot b^p, \quad (a > 0, \; b > 0)\)
+                    </div>
+                    <p class="text-slate-200 text-xs leading-relaxed text-justify">
+                        Ko'paytmani darajaga ko'tarish uchun har bir ko'paytuvchini alohida shu darajaga ko'tarish kifoya qiladi.
+                    </p>
+                </div>
+
+                <!-- Slayd 16 -->
+                <div class="slide space-y-2.5">
+                    <h3 class="text-lg sm:text-xl font-bold text-indigo-400">15-5-Xossa: Kasrning darajasi</h3>
+                    <p class="text-slate-200 text-xs sm:text-sm leading-relaxed text-justify">
+                        Musbat kasrni ratsional darajaga ko'tarish qoidasi quyidagicha ifodalanadi:
+                    </p>
+                    <div class="bg-slate-900/90 p-3 rounded-xl text-center text-sm font-mono text-indigo-300 border border-indigo-500/30 shadow-inner">
+                        \(\left(\frac{a}{b}\right)^p = \frac{a^p}{b^p}, \quad (a > 0, \; b > 0)\)
+                    </div>
+                    <p class="text-slate-200 text-xs leading-relaxed text-justify">
+                        Kasrni darajaga ko'tarish uning surati va maxrajini alohida shu darajaga ko'tarish demakdir.
+                    </p>
+                </div>
+
+                <!-- Slayd 17 -->
+                <div class="slide space-y-2.5">
+                    <h3 class="text-lg sm:text-xl font-bold text-indigo-400">16-Amaliy mashq: Ifodani soddalashtirish</h3>
+                    <p class="text-slate-200 text-xs sm:text-sm leading-relaxed text-justify">
+                        Doskada tahlil qilinadigan amaliy misol:
+                    </p>
+                    <div class="bg-slate-900/90 p-2.5 rounded-xl text-center text-xs font-mono text-indigo-300 border border-indigo-500/30">
+                        \(A = \frac{x^{\frac{1}{2}} \cdot x^{\frac{1}{3}}}{x^{\frac{1}{6}}} \quad \text{bunda } x = 27\)
+                    </div>
+                    <div class="text-[11px] text-slate-200 space-y-0.5 leading-relaxed text-justify">
+                        • Surat: \(\frac{1}{2} + \frac{1}{3} = \frac{5}{6}\).<br>
+                        • Bo'lish: \(\frac{5}{6} - \frac{1}{6} = \frac{4}{6} = \frac{2}{3}\).<br>
+                        • Natija: \(27^{\frac{2}{3}} = (3^3)^{\frac{2}{3}} = 3^2 = 9\).
+                    </div>
+                </div>
+
+                <!-- Slayd 18 -->
+                <div class="slide space-y-2.5">
+                    <h3 class="text-lg sm:text-xl font-bold text-indigo-400">17-Murakkabroq hisoblash mashqi</h3>
+                    <p class="text-slate-200 text-xs sm:text-sm leading-relaxed text-justify">
+                        Quyidagi ifodaning qiymatini hisoblaymiz:
+                    </p>
+                    <div class="bg-slate-900/90 p-2.5 rounded-xl text-center text-xs font-mono text-indigo-300 border border-indigo-500/30">
+                        \(B = (27^{\frac{2}{3}} + 16^{\frac{3}{4}}) \cdot 25^{-\frac{1}{2}}\)
+                    </div>
+                    <div class="text-[11px] text-slate-200 space-y-0.5 leading-relaxed text-justify">
+                        • \(27^{\frac{2}{3}} = 9\), shuningdek \(16^{\frac{3}{4}} = 8\). Qavs ichi: \(9 + 8 = 17\).<br>
+                        • \(25^{-\frac{1}{2}} = \frac{1}{5}\).<br>
+                        • Natija: \(17 \cdot \frac{1}{5} = 3.4\).
+                    </div>
+                </div>
+
+                <!-- Slayd 19 -->
+                <div class="slide space-y-2.5">
+                    <h3 class="text-lg sm:text-xl font-bold text-indigo-400">18-Harfli algebraik kasrni qisqartirish</h3>
+                    <p class="text-slate-200 text-xs sm:text-sm leading-relaxed text-justify">
+                        Ifodani soddalashtiring (\(a > 0, b > 0\)):
+                    </p>
+                    <div class="bg-slate-900/90 p-2.5 rounded-xl text-center text-xs font-mono text-indigo-300 border border-indigo-500/30">
+                        \(\frac{a - b}{a^{\frac{1}{2}} - b^{\frac{1}{2}}}\)
+                    </div>
+                    <p class="text-slate-200 text-xs leading-relaxed text-justify">
+                        Yechilishi: Suratni kvadratlar ayirmasi shaklida yozib, maxraj bilan qisqartiramiz. Natijada \(a^{\frac{1}{2}} + b^{\frac{1}{2}}\) hosil bo'ladi.
+                    </p>
+                </div>
+
+                <!-- Slayd 20 -->
+                <div class="slide space-y-2.5">
+                    <h3 class="text-lg sm:text-xl font-bold text-indigo-400">19-O'quvchilar uchun mustaqil ish</h3>
+                    <p class="text-slate-200 text-xs sm:text-sm leading-relaxed text-justify">
+                        Sinfda o'quvchilar tomonidan bajariladigan topshiriq:
+                    </p>
+                    <div class="bg-slate-900/90 p-2.5 rounded-xl text-center text-xs font-mono text-indigo-300 border border-indigo-500/30">
+                        Ifodani soddalashtiring: \(\left( a^{\frac{3}{4}} - b^{\frac{3}{4}} \right) \left( a^{\frac{3}{4}} + b^{\frac{3}{4}} \right)\)
+                    </div>
+                    <p class="text-slate-200 text-xs leading-relaxed text-justify">
+                        Ko'rsatma: Qisqa ko'paytirish formulasi — kvadratlar ayirmasidan foydalaning. Javob: \(a^{\frac{3}{2}} - b^{\frac{3}{2}}\).
+                    </p>
+                </div>
+
+                <!-- Slayd 21 -->
+                <div class="slide space-y-2.5">
+                    <h3 class="text-lg sm:text-xl font-bold text-indigo-400">20-Muhokama va yakuniy savollar</h3>
+                    <p class="text-slate-200 text-xs sm:text-sm leading-relaxed text-justify">
+                        Dars yakunida o'quvchilarning bilimlarini mustahkamlash uchun savol-javob:<br>
+                        1. Nikol Oresm va Nyutonning daraja nazariyasiga qo'shgan hissasi nimalardan iborat?<br>
+                        2. Nima uchun ratsional darajaning asosi doim musbat son bo'lishi shart?<br>
+                        3. Ildiz belgisi o'rniga kasr darajadan foydalanish qanday afzalliklarni beradi?
+                    </p>
+                </div>
+
+                <!-- Slayd 22 -->
+                <div class="slide space-y-2.5 text-center">
+                    <h3 class="text-2xl sm:text-4xl font-extrabold text-emerald-400 glow-title">E'tiboringiz uchun rahmat!</h3>
+                    <p class="text-slate-200 text-xs sm:text-sm max-w-md mx-auto leading-relaxed text-justify">
+                        Ochiq darsimiz o'z nihoyasiga yetdi. Bugungi dars davomida o'quvchilar ratsional ko'rsatkichli darajalar va ularning tarixi hamda xossalari bo'yicha chuqur bilimga ega bo'ldilar. Barchaga muvaffaqiyatlar tilaymiz!
+                    </p>
+                    <div class="text-indigo-400 font-mono text-xs pt-3">Matematika fani o'qituvchisi • 2026 yil</div>
+                </div>
+
+            </div>
+
+            <!-- Navigatsiya va Indikatorlar Paneli -->
+            <div class="flex flex-col sm:flex-row justify-between items-center mt-6 pt-4 border-t border-slate-800 z-10 gap-3">
+                <button onclick="prevSlide()" class="w-full sm:w-auto bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 px-5 py-2 rounded-xl text-xs font-medium transition cursor-pointer shadow">
+                    ⬅️ Orqaga
+                </button>
+                
+                <!-- Nuqtali Slayd Indikatorlari -->
+                <div id="dots-container" class="flex flex-wrap justify-center gap-1 max-w-xs">
+                    <!-- JS orqali generatsiya qilinadi -->
+                </div>
+
+                <button onclick="nextSlide()" class="w-full sm:w-auto bg-indigo-600 hover:bg-indigo-500 text-white px-5 py-2 rounded-xl text-xs font-medium transition cursor-pointer shadow-lg">
+                    Oldinga ➡️
+                </button>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Slayder Logikasi -->
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+        document.getElementById('total-slides-num').innerText = totalSlides;
+
+        // Nuqta indikatorlarini yaratish
+        const dotsContainer = document.getElementById('dots-container');
+        for (let i = 0; i < totalSlides; i++) {
+            const dot = document.createElement('button');
+            dot.className = `w-1.5 h-1.5 rounded-full transition-all duration-300 cursor-pointer ${i === 0 ? 'bg-indigo-500 w-5' : 'bg-slate-700 hover:bg-slate-500'}`;
+            dot.onclick = () => goToSlide(i);
+            dotsContainer.appendChild(dot);
+        }
+
+        function updateSlide() {
+            slides.forEach((slide, index) => {
+                slide.classList.remove('active');
+                if (index === currentSlide) {
+                    slide.classList.add('active');
+                }
+            });
+
+            // Raqamlar va Progress bar
+            document.getElementById('current-slide-num').innerText = currentSlide + 1;
+            const progressPercent = ((currentSlide + 1) / totalSlides) * 100;
+            document.getElementById('progress-bar').style.width = `${progressPercent}%`;
+
+            // Nuqtalarni yangilash
+            const dots = dotsContainer.children;
+            for (let i = 0; i < dots.length; i++) {
+                if (i === currentSlide) {
+                    dots[i].className = 'w-5 h-1.5 rounded-full bg-indigo-500 transition-all duration-300 cursor-pointer';
+                } else {
+                    dots[i].className = 'w-1.5 h-1.5 rounded-full bg-slate-700 hover:bg-slate-500 transition-all duration-300 cursor-pointer';
+                }
+            }
+
+            if (window.MathJax) {
+                MathJax.typeset();
+            }
+        }
+
+        function nextSlide() {
+            if (currentSlide < totalSlides - 1) {
+                currentSlide++;
+                updateSlide();
+            }
+        }
+
+        function prevSlide() {
+            if (currentSlide > 0) {
+                currentSlide--;
+                updateSlide();
+            }
+        }
+
+        function goToSlide(index) {
+            currentSlide = index;
+            updateSlide();
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === 'PageDown') nextSlide();
+            if (e.key === 'ArrowLeft' || e.key === 'PageUp') prevSlide();
+        });
+
+        updateSlide();
+    </script>
+</body>
+</html>
