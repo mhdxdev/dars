@@ -51,8 +51,13 @@
                     <div class="w-3 h-3 rounded-full bg-emerald-500 animate-ping"></div>
                     <span class="text-xs uppercase tracking-widest text-emerald-400 font-bold">Matematika Ochiq Darsi • Master-klass</span>
                 </div>
-                <div class="bg-indigo-950/90 text-indigo-300 px-3.5 py-1 rounded-full text-xs font-mono border border-indigo-800/80 shadow-inner flex items-center gap-2">
-                    <span>Slayd</span> <span id="current-slide-num" class="font-bold text-white text-sm">1</span> / <span id="total-slides-num">22</span>
+                <div class="flex items-center gap-2">
+                    <a data-tg="chat" target="_blank" rel="noopener" title="Telegram Web K orqali yozish" class="bg-sky-600 hover:bg-sky-500 text-white px-3 py-1 rounded-full text-xs font-semibold transition shadow flex items-center gap-1">
+                        ✈️ <span class="hidden sm:inline">Telegram</span>
+                    </a>
+                    <div class="bg-indigo-950/90 text-indigo-300 px-3.5 py-1 rounded-full text-xs font-mono border border-indigo-800/80 shadow-inner flex items-center gap-2">
+                        <span>Slayd</span> <span id="current-slide-num" class="font-bold text-white text-sm">1</span> / <span id="total-slides-num">22</span>
+                    </div>
                 </div>
             </div>
 
@@ -339,6 +344,20 @@
                         Ochiq darsimiz o'z nihoyasiga yetdi. Bugungi dars davomida o'quvchilar ratsional ko'rsatkichli darajalar va ularning tarixi hamda xossalari bo'yicha chuqur bilimga ega bo'ldilar. Barchaga muvaffaqiyatlar tilaymiz!
                     </p>
                     <div class="text-indigo-400 font-mono text-xs pt-3">Matematika fani o'qituvchisi • 2026 yil</div>
+
+                    <!-- Telegram Web K orqali bog'lanish -->
+                    <div class="pt-5 flex flex-wrap justify-center gap-2">
+                        <a data-tg="chat" target="_blank" rel="noopener" class="bg-sky-600 hover:bg-sky-500 text-white px-4 py-2 rounded-xl text-xs font-semibold transition shadow-lg flex items-center gap-1.5">
+                            ✈️ Menga yozing
+                        </a>
+                        <a data-tg="group" target="_blank" rel="noopener" class="bg-slate-800 hover:bg-slate-700 text-slate-100 border border-slate-700 px-4 py-2 rounded-xl text-xs font-semibold transition shadow flex items-center gap-1.5">
+                            👥 Guruhga qo'shilish
+                        </a>
+                        <a data-tg="bot" target="_blank" rel="noopener" class="bg-slate-800 hover:bg-slate-700 text-slate-100 border border-slate-700 px-4 py-2 rounded-xl text-xs font-semibold transition shadow flex items-center gap-1.5">
+                            🤖 Botni ochish
+                        </a>
+                    </div>
+                    <p class="text-slate-400 text-[11px] pt-2">Havolalar Telegram Web K'da ochiladi</p>
                 </div>
 
             </div>
@@ -357,6 +376,11 @@
                 <button onclick="nextSlide()" class="w-full sm:w-auto bg-indigo-600 hover:bg-indigo-500 text-white px-5 py-2 rounded-xl text-xs font-medium transition cursor-pointer shadow-lg">
                     Oldinga ➡️
                 </button>
+
+                <!-- Telegram Web K - tezkor aloqa -->
+                <a data-tg="chat" target="_blank" rel="noopener" class="w-full sm:w-auto text-center bg-sky-600 hover:bg-sky-500 text-white px-5 py-2 rounded-xl text-xs font-medium transition cursor-pointer shadow-lg">
+                    ✈️ Telegram Web K
+                </a>
             </div>
 
         </div>
@@ -364,6 +388,27 @@
 
     <!-- Slayder Logikasi -->
     <script>
+        // ===== Telegram Web K ulanish sozlamalari =====
+        // Quyidagi uchta qiymatni o'zingiznikiga almashtiring:
+        // username - shaxsiy profiliniz (@ belgisisiz), bot - botingiz nomi,
+        // group - guruh/kanal taklif havolasi (https://t.me/+...)
+        const TELEGRAM = {
+            username: 'YOUR_USERNAME',
+            bot: 'YOUR_BOT',
+            group: 'https://t.me/+YOUR_INVITE_LINK'
+        };
+
+        const telegramUrls = {
+            chat: `https://web.telegram.org/k/#@${TELEGRAM.username}`,
+            bot: `https://web.telegram.org/k/#@${TELEGRAM.bot}`,
+            group: TELEGRAM.group
+        };
+
+        document.querySelectorAll('[data-tg]').forEach((link) => {
+            link.href = telegramUrls[link.dataset.tg];
+        });
+        // ==============================================
+
         let currentSlide = 0;
         const slides = document.querySelectorAll('.slide');
         const totalSlides = slides.length;
