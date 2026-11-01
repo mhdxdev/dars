@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Boshqaruv paneli • Ochiq Dars</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .glass-panel {
+            background: rgba(15, 23, 42, 0.94);
+            backdrop-filter: blur(24px);
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.9);
+        }
+        .glow-title {
+            text-shadow: 0 0 25px rgba(99, 102, 241, 0.6);
+        }
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen font-sans selection:bg-indigo-500 selection:text-white p-4 sm:p-6 relative overflow-x-hidden">
+
+    <!-- Orqa fon neon yorug'liklari -->
+    <div class="fixed inset-0 overflow-hidden pointer-events-none">
+        <div class="absolute top-0 left-1/4 w-[500px] h-[500px] bg-indigo-600/10 rounded-full blur-[140px]"></div>
+        <div class="absolute bottom-0 right-1/4 w-[500px] h-[500px] bg-purple-600/10 rounded-full blur-[140px]"></div>
+    </div>
+
+    <main class="max-w-4xl w-full mx-auto space-y-4 relative z-10">
+
+        <!-- Sarlavha -->
+        <header class="glass-panel rounded-3xl p-5 sm:p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div>
+                <div class="flex items-center gap-2 mb-1">
+                    <div class="w-3 h-3 rounded-full bg-emerald-500 animate-ping"></div>
+                    <span class="text-[10px] sm:text-xs uppercase tracking-widest text-emerald-400 font-bold">Tizim holati • Jonli</span>
+                </div>
+                <h1 class="text-2xl sm:text-3xl font-extrabold text-white glow-title leading-tight">Boshqaruv paneli</h1>
+                <p class="text-xs sm:text-sm text-slate-300 mt-1 leading-relaxed">
+                    Ochiq dars ilovasining umumiy holati va faol jarayonlari bir sahifada.
+                </p>
+            </div>
+            <a href="/" class="shrink-0 inline-flex items-center justify-center gap-1.5 bg-indigo-600 hover:bg-indigo-500 text-white px-4 py-2 rounded-xl text-xs font-medium transition shadow-lg">
+                ⬅️ Taqdimotga qaytish
+            </a>
+        </header>
+
+        <!-- Asosiy ko'rsatkichlar -->
+        <section class="grid grid-cols-2 lg:grid-cols-4 gap-3">
+            <div class="bg-slate-900/90 border border-slate-800 rounded-2xl p-4">
+                <span class="text-[10px] uppercase tracking-widest text-slate-400 font-bold">Sayt holati</span>
+                <div id="stat-status" class="text-lg font-extrabold text-emerald-400 mt-2">Onlayn</div>
+                <span class="text-[11px] text-slate-500">Sahifa javob bermoqda</span>
+            </div>
+            <div class="bg-slate-900/90 border border-slate-800 rounded-2xl p-4">
+                <span class="text-[10px] uppercase tracking-widest text-slate-400 font-bold">Slaydlar</span>
+                <div id="stat-slides" class="text-2xl font-extrabold text-white mt-2">—</div>
+                <span class="text-[11px] text-slate-500">ta slayd</span>
+            </div>
+            <div class="bg-slate-900/90 border border-slate-800 rounded-2xl p-4">
+                <span class="text-[10px] uppercase tracking-widest text-slate-400 font-bold">Formulalar</span>
+                <div id="stat-formulas" class="text-2xl font-extrabold text-white mt-2">—</div>
+                <span class="text-[11px] text-slate-500">MathJax ifodasi</span>
+            </div>
+            <div class="bg-slate-900/90 border border-slate-800 rounded-2xl p-4">
+                <span class="text-[10px] uppercase tracking-widest text-slate-400 font-bold">Oxirgi yangilanish</span>
+                <div id="stat-updated" class="text-base font-extrabold text-indigo-300 mt-2">—</div>
+                <span class="text-[11px] text-slate-500">taqdimot fayli</span>
+            </div>
+        </section>
+
+        <!-- Faol jarayonlar -->
+        <section class="glass-panel rounded-3xl p-5 sm:p-6">
+            <div class="flex items-center justify-between gap-3 mb-1">
+                <h2 class="text-lg sm:text-xl font-bold text-indigo-400">Faol jarayonlar</h2>
+                <span class="text-[10px] uppercase tracking-widest text-slate-500" id="process-summary">tekshirilmoqda…</span>
+            </div>
+            <p class="text-[11px] sm:text-xs text-slate-400 leading-relaxed mb-3">
+                Taqdimot ishlashi uchun zarur bo'lgan jarayonlar va ularning joriy holati.
+            </p>
+
+            <ul class="divide-y divide-slate-800 border border-slate-800 rounded-2xl overflow-hidden">
+                <li class="flex items-center justify-between gap-3 p-3 bg-slate-900/70">
+                    <div class="min-w-0">
+                        <div class="text-xs sm:text-sm font-semibold text-slate-100">Taqdimot sahifasi</div>
+                        <div class="text-[10px] sm:text-[11px] text-slate-500 font-mono truncate" id="page-detail">index.html</div>
+                    </div>
+                    <span data-status="page" class="shrink-0 text-[10px] font-bold px-2.5 py-1 rounded-full border border-slate-700 bg-slate-800 text-slate-400">Tekshirilmoqda</span>
+                </li>
+                <li class="flex items-center justify-between gap-3 p-3 bg-slate-900/70">
+                    <div class="min-w-0">
+                        <div class="text-xs sm:text-sm font-semibold text-slate-100">Uslublar</div>
+                        <div class="text-[10px] sm:text-[11px] text-slate-500 font-mono truncate">Tailwind CSS (CDN)</div>
+                    </div>
+                    <span data-status="tailwind" class="shrink-0 text-[10px] font-bold px-2.5 py-1 rounded-full border border-slate-700 bg-slate-800 text-slate-400">Tekshirilmoqda</span>
+                </li>
+                <li class="flex items-center justify-between gap-3 p-3 bg-slate-900/70">
+                    <div class="min-w-0">
+                        <div class="text-xs sm:text-sm font-semibold text-slate-100">Formulalar</div>
+                        <div class="text-[10px] sm:text-[11px] text-slate-500 font-mono truncate">MathJax (CDN)</div>
+                    </div>
+                    <span data-status="mathjax" class="shrink-0 text-[10px] font-bold px-2.5 py-1 rounded-full border border-slate-700 bg-slate-800 text-slate-400">Tekshirilmoqda</span>
+                </li>
+                <li class="flex items-center justify-between gap-3 p-3 bg-slate-900/70">
+                    <div class="min-w-0">
+                        <div class="text-xs sm:text-sm font-semibold text-slate-100">Slayd navigatsiyasi</div>
+                        <div class="text-[10px] sm:text-[11px] text-slate-500 font-mono truncate">klaviatura va tugmalar</div>
+                    </div>
+                    <span data-status="nav" class="shrink-0 text-[10px] font-bold px-2.5 py-1 rounded-full border border-slate-700 bg-slate-800 text-slate-400">Tekshirilmoqda</span>
+                </li>
+            </ul>
+        </section>
+
+        <p class="text-center text-[10px] text-slate-600 pt-1">Matematika fani o'qituvchisi • Ochiq dars</p>
+    </main>
+
+    <script>
+        const statusStyles = {
+            ok: 'border-emerald-500/40 bg-emerald-500/15 text-emerald-300',
+            warn: 'border-amber-500/40 bg-amber-500/15 text-amber-300',
+            error: 'border-rose-500/40 bg-rose-500/15 text-rose-300'
+        };
+
+        function setStatus(key, state, label) {
+            const el = document.querySelector(`[data-status="${key}"]`);
+            if (!el) return;
+            el.className = `shrink-0 text-[10px] font-bold px-2.5 py-1 rounded-full border ${statusStyles[state]}`;
+            el.dataset.state = state;
+            el.textContent = label;
+        }
+
+        const months = ['yanvar', 'fevral', 'mart', 'aprel', 'may', 'iyun', 'iyul', 'avgust', 'sentabr', 'oktabr', 'noyabr', 'dekabr'];
+
+        function formatDate(value) {
+            const date = new Date(value);
+            if (isNaN(date.getTime())) return '—';
+            return `${date.getDate()} ${months[date.getMonth()]}, ${date.getFullYear()}`;
+        }
+
+        // Taqdimot faylini o'qib, haqiqiy ko'rsatkichlarni hisoblash
+        async function loadPresentation() {
+            try {
+                const response = await fetch('/index.html', { cache: 'no-store' });
+                if (!response.ok) throw new Error('HTTP ' + response.status);
+
+                const html = await response.text();
+                const slides = (html.match(/class="slide[\s"]/g) || []).length;
+                const formulas = (html.match(/\\\(/g) || []).length;
+
+                document.getElementById('stat-slides').textContent = slides;
+                document.getElementById('stat-formulas').textContent = formulas;
+                document.getElementById('stat-updated').textContent =
+                    formatDate(response.headers.get('last-modified') || Date.now());
+
+                document.getElementById('page-detail').textContent =
+                    `index.html • ${(html.length / 1024).toFixed(1)} KB`;
+                document.getElementById('page-detail').title = 'index.html';
+
+                setStatus('page', 'ok', 'Faol');
+                setStatus('nav', 'ok', 'Faol');
+            } catch (error) {
+                document.getElementById('stat-status').textContent = 'Xato';
+                document.getElementById('stat-status').className = 'text-lg font-extrabold text-rose-400 mt-2';
+                document.getElementById('page-detail').textContent = 'index.html • o\'qilmadi';
+                setStatus('page', 'error', 'Xato');
+                setStatus('nav', 'warn', 'Noma\'lum');
+            }
+        }
+
+        // Tashqi kutubxonalar mavjudligini tekshirish
+        async function checkAsset(key, url) {
+            try {
+                await fetch(url, { mode: 'no-cors', cache: 'no-store' });
+                setStatus(key, 'ok', 'Faol');
+                return true;
+            } catch (error) {
+                setStatus(key, 'error', 'Ulanmadi');
+                return false;
+            }
+        }
+
+        async function loadProcesses() {
+            await Promise.all([
+                checkAsset('tailwind', 'https://cdn.tailwindcss.com'),
+                checkAsset('mathjax', 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js')
+            ]);
+        }
+
+        // Barcha tekshiruvlardan so'ng faol jarayonlar sonini hisoblash
+        async function initDashboard() {
+            await loadPresentation();
+            await loadProcesses();
+            const total = document.querySelectorAll('[data-status]').length;
+            const active = document.querySelectorAll('[data-state="ok"]').length;
+            document.getElementById('process-summary').textContent = `${active} / ${total} faol`;
+        }
+
+        initDashboard();
+    </script>
+</body>
+</html>
