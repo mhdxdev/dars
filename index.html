@@ -57,6 +57,17 @@
             <p class="text-slate-300 text-xs sm:text-sm leading-relaxed">Slaydlarni ochish uchun Google akkauntingiz bilan ro'yxatdan o'ting.</p>
             <div id="gsi-button" class="flex justify-center min-h-[44px]"></div>
             <p id="auth-notice" class="hidden text-[11px] text-amber-300 bg-amber-500/10 border border-amber-500/30 rounded-xl px-3 py-2 leading-relaxed"></p>
+
+            <!-- Lokal kirish: server yo'q, hisob shu qurilmada -->
+            <form id="local-login-form" class="space-y-2 text-left border-t border-slate-800 pt-3">
+                <p class="text-[11px] text-slate-400 text-center">yoki lokal hisob bilan kirish</p>
+                <input id="local-email" type="email" required autocomplete="username" placeholder="Email" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500">
+                <input id="local-password" type="password" required minlength="4" autocomplete="current-password" placeholder="Parol" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500">
+                <button type="submit" class="w-full bg-slate-800 hover:bg-slate-700 border border-slate-700 text-white text-xs font-semibold rounded-xl py-2 transition">Kirish</button>
+                <p id="local-auth-msg" class="hidden text-[11px] rounded-xl px-3 py-2 leading-relaxed"></p>
+                <p class="text-[10px] text-slate-500 text-center leading-relaxed">Birinchi kirishda parol shu qurilma uchun saqlanadi. Server yo'q, shuning uchun himoya faqat lokal.</p>
+            </form>
+
             <p class="text-slate-500 text-[11px]">Ro'yxatdan o'tganingiz shu qurilmada eslab qolinadi.</p>
         </div>
     </section>
@@ -425,6 +436,7 @@
     </main>
 
     <script src="js/store.js"></script>
+    <script src="js/local-auth.js"></script>
     <script src="js/messenger.js"></script>
     <script src="js/admin.js"></script>
 
@@ -522,6 +534,27 @@
             document.head.appendChild(script);
         }
         // ===========================================
+
+        // ===== Lokal kirish (server yo'q, hisob qurilmada) =====
+        const localForm = document.getElementById('local-login-form');
+        localForm.addEventListener('submit', async (event) => {
+            event.preventDefault();
+            const message = document.getElementById('local-auth-msg');
+            const result = await localSignIn(
+                document.getElementById('local-email').value,
+                document.getElementById('local-password').value
+            );
+            if (!result.ok) {
+                message.textContent = result.message;
+                message.className = 'text-[11px] rounded-xl px-3 py-2 leading-relaxed text-rose-300 bg-rose-500/10 border border-rose-500/30';
+                return;
+            }
+            message.classList.add('hidden');
+            const user = { name: result.account.name, email: result.account.email, local: true };
+            localStorage.setItem(USER_KEY, JSON.stringify(user));
+            localForm.reset();
+            unlockUI(user);
+        });
 
         let currentSlide = 0;
         const slides = document.querySelectorAll('.slide');

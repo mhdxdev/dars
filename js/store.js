@@ -25,15 +25,18 @@ const Store = {
     recordUser(user) {
         const users = this.users();
         const now = new Date().toISOString();
+        const method = user.local ? 'lokal' : 'google';
         const existing = users.find((u) => u.email === user.email);
         if (existing) {
             existing.name = user.name || existing.name;
             existing.lastSeen = now;
+            existing.method = method;
         } else {
             users.push({
                 name: user.name || user.email,
                 email: user.email || '',
                 picture: user.picture || '',
+                method,
                 firstSeen: now,
                 lastSeen: now
             });

@@ -26,6 +26,7 @@ function adminBody(tab) {
                             <div class="text-xs font-semibold text-white truncate">${escapeHtml(user.name)}</div>
                             <div class="text-[10px] text-slate-400 truncate">${escapeHtml(user.email)}</div>
                         </div>
+                        <span class="text-[9px] uppercase tracking-wide text-slate-400 border border-slate-700 rounded px-1.5 py-0.5 shrink-0">${escapeHtml(user.method || 'google')}</span>
                         <div class="text-[10px] text-slate-500 text-right shrink-0">${escapeHtml(formatTime(user.lastSeen))}</div>
                     </div>`).join('')}
             </div>
@@ -94,7 +95,7 @@ function renderAdmin() {
         <div class="glass-panel p-4 sm:p-6 rounded-3xl space-y-4">
             <div class="flex items-center justify-between gap-2 border-b border-slate-800 pb-3">
                 <h2 class="text-base sm:text-lg font-bold text-white">Admin panel</h2>
-                <span class="text-[10px] text-emerald-400 font-mono truncate">${escapeHtml(user.email)}</span>
+                <span class="text-[10px] ${user.local ? 'text-sky-300' : 'text-emerald-400'} font-mono truncate">${escapeHtml(user.email)} · ${user.local ? 'lokal' : 'google'}</span>
             </div>
             <div class="flex flex-wrap gap-2">
                 ${tabs.map((tab) => `
