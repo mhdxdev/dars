@@ -28,21 +28,36 @@
         .glow-title {
             text-shadow: 0 0 25px rgba(99, 102, 241, 0.6);
         }
+        body.locked #deck,
+        body.locked #progress-wrap { display: none; }
+        body:not(.locked) #auth-gate { display: none; }
     </style>
 </head>
-<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col justify-between font-sans selection:bg-indigo-500 selection:text-white p-4 sm:p-6 relative overflow-x-hidden">
+<body class="locked bg-slate-950 text-slate-100 min-h-screen flex flex-col justify-between font-sans selection:bg-indigo-500 selection:text-white p-4 sm:p-6 relative overflow-x-hidden">
 
     <!-- Orqa fon neon yorug'liklari -->
     <div class="absolute top-0 left-1/4 w-[500px] h-[500px] bg-indigo-600/10 rounded-full blur-[140px] pointer-events-none"></div>
     <div class="absolute bottom-0 right-1/4 w-[500px] h-[500px] bg-purple-600/10 rounded-full blur-[140px] pointer-events-none"></div>
 
     <!-- Yuqori Taraqqiyot Chizig'i (Progress Bar) -->
-    <div class="max-w-4xl w-full mx-auto mb-3 bg-slate-900 rounded-full h-2 overflow-hidden border border-slate-800">
+    <div id="progress-wrap" class="max-w-4xl w-full mx-auto mb-3 bg-slate-900 rounded-full h-2 overflow-hidden border border-slate-800">
         <div id="progress-bar" class="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 h-full w-0 transition-all duration-300"></div>
     </div>
 
+    <!-- Google bilan ro'yxatdan o'tish darvozasi -->
+    <section id="auth-gate" class="max-w-md w-full mx-auto my-auto">
+        <div class="glass-panel p-6 sm:p-8 rounded-3xl text-center space-y-4">
+            <div class="w-14 h-14 mx-auto rounded-2xl bg-indigo-600/20 border border-indigo-500/40 flex items-center justify-center text-2xl">🔒</div>
+            <h2 class="text-xl sm:text-2xl font-extrabold text-white">Taqdimot qulflangan</h2>
+            <p class="text-slate-300 text-xs sm:text-sm leading-relaxed">Slaydlarni ochish uchun Google akkauntingiz bilan ro'yxatdan o'ting.</p>
+            <div id="gsi-button" class="flex justify-center min-h-[44px]"></div>
+            <p id="auth-notice" class="hidden text-[11px] text-amber-300 bg-amber-500/10 border border-amber-500/30 rounded-xl px-3 py-2 leading-relaxed"></p>
+            <p class="text-slate-500 text-[11px]">Ro'yxatdan o'tganingiz shu qurilmada eslab qolinadi.</p>
+        </div>
+    </section>
+
     <!-- Asosiy Slayd Konteyneri -->
-    <main class="max-w-4xl w-full mx-auto my-auto">
+    <main id="deck" class="max-w-4xl w-full mx-auto my-auto">
         <div class="glass-panel p-6 sm:p-8 rounded-3xl min-h-[600px] flex flex-col justify-between relative">
             
             <!-- Yuqori panel: Slayd Raqami va Mavzu -->
@@ -52,6 +67,11 @@
                     <span class="text-xs uppercase tracking-widest text-emerald-400 font-bold">Matematika Ochiq Darsi • Master-klass</span>
                 </div>
                 <div class="flex items-center gap-2">
+                    <div id="user-chip" class="hidden items-center gap-1.5 bg-slate-800/80 border border-slate-700 rounded-full pl-1 pr-2 py-1">
+                        <img id="user-avatar" alt="" class="w-5 h-5 rounded-full hidden">
+                        <span id="user-name" class="text-[11px] text-slate-200 font-semibold max-w-[90px] truncate"></span>
+                        <button onclick="signOut()" title="Chiqish" class="text-slate-400 hover:text-white text-xs cursor-pointer">✕</button>
+                    </div>
                     <a data-tg="chat" target="_blank" rel="noopener" title="Telegram Web K orqali yozish" class="bg-sky-600 hover:bg-sky-500 text-white px-3 py-1 rounded-full text-xs font-semibold transition shadow flex items-center gap-1">
                         ✈️ <span class="hidden sm:inline">Telegram</span>
                     </a>
@@ -409,6 +429,73 @@
         });
         // ==============================================
 
+        // ===== Google bilan ro'yxatdan o'tish =====
+        // Google Cloud Console > APIs & Services > Credentials bo'limidan
+        // "OAuth client ID" (Web application) yaratib, qiymatini quyiga qo'ying.
+        const GOOGLE_CLIENT_ID = 'YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com';
+        const USER_KEY = 'lesson_user';
+
+        function currentUser() {
+            try {
+                return JSON.parse(localStorage.getItem(USER_KEY));
+            } catch (e) {
+                return null;
+            }
+        }
+
+        function unlockUI(user) {
+            document.body.classList.remove('locked');
+            document.getElementById('user-name').textContent = user.name || user.email || 'Foydalanuvchi';
+            const avatar = document.getElementById('user-avatar');
+            if (user.picture) {
+                avatar.src = user.picture;
+                avatar.classList.remove('hidden');
+            }
+            document.getElementById('user-chip').classList.replace('hidden', 'flex');
+        }
+
+        function signOut() {
+            localStorage.removeItem(USER_KEY);
+            document.getElementById('user-chip').classList.replace('flex', 'hidden');
+            document.body.classList.add('locked');
+        }
+
+        function handleCredential(response) {
+            try {
+                const payload = JSON.parse(atob(response.credential.split('.')[1].replace(/-/g, '+').replace(/_/g, '/')));
+                if (payload.aud !== GOOGLE_CLIENT_ID) return;
+                const user = { name: payload.name, email: payload.email, picture: payload.picture };
+                localStorage.setItem(USER_KEY, JSON.stringify(user));
+                unlockUI(user);
+            } catch (e) {
+                console.error("Google javobini o'qib bo'lmadi", e);
+            }
+        }
+
+        function initGoogleGate() {
+            const notice = document.getElementById('auth-notice');
+            if (GOOGLE_CLIENT_ID.startsWith('YOUR_')) {
+                notice.textContent = "Google Client ID hali kiritilmagan. Google Cloud Console'da OAuth Client ID yarating va kod ichidagi GOOGLE_CLIENT_ID qiymatiga qo'ying.";
+                notice.classList.remove('hidden');
+                return;
+            }
+            const script = document.createElement('script');
+            script.src = 'https://accounts.google.com/gsi/client';
+            script.async = true;
+            script.onload = () => {
+                google.accounts.id.initialize({ client_id: GOOGLE_CLIENT_ID, callback: handleCredential });
+                google.accounts.id.renderButton(document.getElementById('gsi-button'), {
+                    theme: 'filled_blue',
+                    size: 'large',
+                    text: 'signup_with',
+                    shape: 'pill',
+                    width: 260
+                });
+            };
+            document.head.appendChild(script);
+        }
+        // ===========================================
+
         let currentSlide = 0;
         const slides = document.querySelectorAll('.slide');
         const totalSlides = slides.length;
@@ -471,9 +558,15 @@
         }
 
         document.addEventListener('keydown', (e) => {
+            if (document.body.classList.contains('locked')) return;
             if (e.key === 'ArrowRight' || e.key === 'PageDown') nextSlide();
             if (e.key === 'ArrowLeft' || e.key === 'PageUp') prevSlide();
         });
+
+        // Ro'yxatdan o'tgan foydalanuvchini tiklash
+        const savedUser = currentUser();
+        if (savedUser) unlockUI(savedUser);
+        initGoogleGate();
 
         updateSlide();
     </script>
