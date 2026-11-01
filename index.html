@@ -30,6 +30,11 @@
         }
         body.locked #deck,
         body.locked #progress-wrap { display: none; }
+        .view-tab.view-active {
+            background-color: #4f46e5 !important;
+            border-color: #6366f1 !important;
+            color: #ffffff !important;
+        }
         body:not(.locked) #auth-gate { display: none; }
     </style>
 </head>
@@ -55,6 +60,19 @@
             <p class="text-slate-500 text-[11px]">Ro'yxatdan o'tganingiz shu qurilmada eslab qolinadi.</p>
         </div>
     </section>
+
+    <!-- Bo'limlar tanlash -->
+    <nav id="app-nav" class="hidden max-w-4xl w-full mx-auto mb-3 gap-2 z-10">
+        <button data-view="lesson" class="view-tab px-3 py-1.5 rounded-xl text-[11px] font-semibold border border-slate-700 bg-slate-800 text-slate-300 transition">📊 Taqdimot</button>
+        <button data-view="messenger" class="view-tab px-3 py-1.5 rounded-xl text-[11px] font-semibold border border-slate-700 bg-slate-800 text-slate-300 transition">💬 Messenger</button>
+        <button data-view="admin" id="admin-tab" class="view-tab hidden px-3 py-1.5 rounded-xl text-[11px] font-semibold border border-slate-700 bg-slate-800 text-slate-300 transition">🛡️ Admin</button>
+    </nav>
+
+    <!-- Messenger bo'limi -->
+    <section id="view-messenger" class="hidden max-w-4xl w-full mx-auto my-auto"></section>
+
+    <!-- Admin panel bo'limi -->
+    <section id="view-admin" class="hidden max-w-4xl w-full mx-auto my-auto"></section>
 
     <!-- Asosiy Slayd Konteyneri -->
     <main id="deck" class="max-w-4xl w-full mx-auto my-auto">
@@ -406,6 +424,10 @@
         </div>
     </main>
 
+    <script src="js/store.js"></script>
+    <script src="js/messenger.js"></script>
+    <script src="js/admin.js"></script>
+
     <!-- Slayder Logikasi -->
     <script>
         // ===== Telegram Web K ulanish sozlamalari =====
@@ -452,12 +474,17 @@
                 avatar.classList.remove('hidden');
             }
             document.getElementById('user-chip').classList.replace('hidden', 'flex');
+            onSession(user);
         }
 
         function signOut() {
             localStorage.removeItem(USER_KEY);
             document.getElementById('user-chip').classList.replace('flex', 'hidden');
             document.body.classList.add('locked');
+            const nav = document.getElementById('app-nav');
+            nav.classList.add('hidden');
+            nav.classList.remove('flex');
+            showView('lesson');
         }
 
         function handleCredential(response) {
@@ -561,6 +588,45 @@
             if (document.body.classList.contains('locked')) return;
             if (e.key === 'ArrowRight' || e.key === 'PageDown') nextSlide();
             if (e.key === 'ArrowLeft' || e.key === 'PageUp') prevSlide();
+        });
+
+        // ===== Bo'limlar: Taqdimot / Messenger / Admin =====
+        function applySlideOverrides() {
+            const overrides = Store.slideOverrides();
+            document.querySelectorAll('#slides-container .slide').forEach((slide, index) => {
+                const heading = slide.querySelector('h2, h3');
+                if (heading && overrides[index]) heading.textContent = overrides[index];
+            });
+        }
+
+        function showView(view) {
+            if (view === 'admin') {
+                const viewer = currentUser();
+                if (!viewer || viewer.email !== ADMIN_EMAIL) return;
+            }
+            document.getElementById('deck').classList.toggle('hidden', view !== 'lesson');
+            document.getElementById('progress-wrap').classList.toggle('hidden', view !== 'lesson');
+            document.getElementById('view-messenger').classList.toggle('hidden', view !== 'messenger');
+            document.getElementById('view-admin').classList.toggle('hidden', view !== 'admin');
+            document.querySelectorAll('.view-tab').forEach((tab) => {
+                tab.classList.toggle('view-active', tab.dataset.view === view);
+            });
+            if (view === 'messenger') renderMessenger();
+            if (view === 'admin') renderAdmin();
+        }
+
+        function onSession(user) {
+            Store.recordUser(user);
+            const nav = document.getElementById('app-nav');
+            nav.classList.remove('hidden');
+            nav.classList.add('flex');
+            document.getElementById('admin-tab').classList.toggle('hidden', user.email !== ADMIN_EMAIL);
+            applySlideOverrides();
+            showView('lesson');
+        }
+
+        document.querySelectorAll('.view-tab').forEach((tab) => {
+            tab.onclick = () => showView(tab.dataset.view);
         });
 
         // Ro'yxatdan o'tgan foydalanuvchini tiklash
